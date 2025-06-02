@@ -48,32 +48,16 @@ async function DeleteTarefa (idTarefa) {
 // Atualiza a tarefa
 async function UpdateTarefa (id, tarefa) { 
 
-    let title;
-    let descrição;
-    let status;
+    const title = tarefa.title 
 
+    //  Usamos o operador de coalescência nula (??) para definir como ''
+    //  se a propriedade for undefined ou null.
+    const descrição = tarefa.descrição ?? ''
+    const status = tarefa.status
 
-    if (Object.keys(tarefa).length === 2){
-        title = tarefa[0];
-        status = tarefa[1];
-    }
-    if (Object.keys(tarefa).length === 3){
-        title = tarefa[0];
-        descrição = tarefa[1];
-        status = tarefa[2];
-    }
 
     const sql = 'UPDATE tarefas SET title = ?, descrição = ?, status = ? WHERE id = ?';
-    
-
-    let values  = ''
-    if (descrição === undefined || descrição === '') {
-        values = [title, status, id];
-    }
-
-    else {
-        values = [title, descrição, status, id];
-    }
+    let values = [title, descrição, status, id];
 
     const update_tarefa = await bd.execute(sql,values);   
 
